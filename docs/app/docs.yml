@@ -1,0 +1,709 @@
+openapi: 3.0.2
+info:
+  version: 1.0.0
+  title: App schema
+paths:
+  /api/v1/health:
+    get:
+      tags:
+        - health
+      description: Получить информацию о работоспособности приложения
+      operationId: V1CheckHealth
+      responses:
+        200:
+          description: Успешный ответ
+          $ref: '#/components/responses/SuccessResponse'
+        default:
+          description: Ошибка
+          $ref: "#/components/responses/ErrorResponse"
+
+  /api/v1/registrations:
+    post:
+      tags:
+        - registrations
+      description: Создать заявку на регистрацию пользователя
+      operationId: V1CreateRegistration
+      requestBody:
+        $ref: '#/components/requestBodies/V1RegistrationsCreateRegistrationRequestBody'
+      responses:
+        200:
+          description: Успешный ответ
+          $ref: '#/components/responses/V1RegistrationsCreateRegistrationResponse'
+        default:
+          description: Ошибка
+          $ref: "#/components/responses/ErrorResponse"
+    patch:
+      tags:
+        - registrations
+      description: Подтверждение заявки на регистрацию
+      operationId: V1ConfirmRegistration
+      requestBody:
+        $ref: '#/components/requestBodies/V1RegistrationsConfirmRegistrationRequestBody'
+      responses:
+        200:
+          description: Успешный ответ
+          $ref: '#/components/responses/V1RegistrationsConfirmRegistrationResponse'
+        default:
+          description: Ошибка
+          $ref: "#/components/responses/ErrorResponse"
+
+  /api/v1/session:
+    get:
+      tags:
+        - sessions
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationToken'
+      description: Получить информацию валидна ли текущая сессия
+      operationId: V1CheckCurrentSession
+      responses:
+        200:
+          description: Успешный ответ, пользователь авторизован
+          $ref: '#/components/responses/SuccessResponse'
+        default:
+          description: Ошибка
+          $ref: "#/components/responses/ErrorResponse"
+
+  /api/v1/sessions:
+    post:
+      tags:
+        - sessions
+      description: Создание сессии пользователя
+      operationId: V1CreateSession
+      requestBody:
+        $ref: '#/components/requestBodies/V1SessionsCreateSessionRequestBody'
+      responses:
+        200:
+          description: Успешный ответ, пользователь авторизован
+          $ref: '#/components/responses/V1SessionsCreateSessionResponse'
+        default:
+          description: Ошибка
+          $ref: "#/components/responses/ErrorResponse"
+
+  /api/v1/sessions/{id}:
+    delete:
+      tags:
+        - sessions
+      description: Удаление сессии пользователя
+      operationId: V1DeleteSession
+      parameters:
+        - description: Id сессии
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Успешный ответ, сессия удалена
+          $ref: '#/components/responses/SuccessResponse'
+        default:
+          description: Ошибка
+          $ref: "#/components/responses/ErrorResponse"
+
+  /api/v1/passwordRecoveryRequests:
+    post:
+      tags:
+        - passwordRecoveryRequests
+      description: Создать заявку на восстановление пароля
+      operationId: V1CreatePasswordRecoveryRequest
+      requestBody:
+        $ref: '#/components/requestBodies/V1PasswordRecoveryRequestsCreatePasswordRecoveryRequestRequestBody'
+      responses:
+        200:
+          description: Успешный ответ
+          $ref: '#/components/responses/V1PasswordRecoveryRequestsCreatePasswordRecoveryRequestResponse'
+        default:
+          description: Ошибка
+          $ref: "#/components/responses/ErrorResponse"
+    patch:
+      tags:
+        - passwordRecoveryRequests
+      description: Подтверждение заявки на восстановление пароля
+      operationId: V1ConfirmPasswordRecoveryRequest
+      requestBody:
+        $ref: '#/components/requestBodies/V1PasswordRecoveryRequestsConfirmPasswordRecoveryRequestRequestBody'
+      responses:
+        200:
+          description: Успешный ответ
+          $ref: '#/components/responses/V1PasswordRecoveryRequestsConfirmPasswordRecoveryRequestResponse'
+        default:
+          description: Ошибка
+          $ref: "#/components/responses/ErrorResponse"
+
+  /api/v1/users:
+    get:
+      tags:
+        - users
+      description: Получение информации обо всех пользователях
+      operationId: V1GetUsers
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationToken'
+        - $ref: '#/components/parameters/LimitParameter'
+        - $ref: '#/components/parameters/OffsetParameter'
+      responses:
+        200:
+          description: Список всех пользователей
+          $ref: '#/components/responses/V1UsersGetUsersResponse'
+        default:
+          description: Ошибка
+          $ref: "#/components/responses/ErrorResponse"
+
+  /api/v1/user:
+    get:
+      tags:
+        - users
+      description: Получение информации о текущем пользователе
+      operationId: V1GetCurrentUser
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationToken'
+      responses:
+        200:
+          description: Текущий пользователь
+          $ref: '#/components/responses/V1UsersGetUserResponse'
+        default:
+          description: Ошибка
+          $ref: "#/components/responses/ErrorResponse"
+
+  /api/v1/oauth:
+    post:
+      tags:
+        - oauth
+      description: Авторизация в приложении с помощью oauth
+      operationId: V1AuthorizeUsingOauth
+      requestBody:
+        $ref: '#/components/requestBodies/V1AuthorizeUsingOauthRequestBody'
+      responses:
+        200:
+          description: Возвращает URL, куда нужно перенаправить пользователя
+          $ref: '#/components/responses/V1AuthorizeUsingOauthResponse'
+        default:
+          description: Ошибка
+          $ref: "#/components/responses/ErrorResponse"
+
+  /api/v1/oauthRedirect/vk:
+    get:
+      tags:
+        - oauth
+      description: Обработка редиректа после авторизации в vk
+      operationId: V1AuthorizeUsingOauthHandleVkRedirect
+      parameters:
+        - description: Код, по которому можно получить информацию о пользователе из vk
+          in: query
+          name: code
+          required: true
+          schema:
+            type: string
+      responses:
+        302:
+          description: Возвращает URL, куда нужно перенаправить пользователя, home page приложения
+          headers:
+            Location:
+              description: URL, куда нужно перенаправить пользователя после авторизации, home page приложения
+              schema:
+                type: string
+        default:
+          description: Ошибка
+          $ref: "#/components/responses/ErrorResponse"
+
+  /api/v1/oauthRedirect/mail:
+    get:
+      tags:
+        - oauth
+      description: Обработка редиректа после авторизации в mail.ru
+      operationId: V1AuthorizeUsingOauthHandleMailRedirect
+      parameters:
+        - description: Код, по которому можно получить информацию о пользователе из mail
+          in: query
+          name: code
+          required: true
+          schema:
+            type: string
+      responses:
+        302:
+          description: Возвращает URL, куда нужно перенаправить пользователя, home page приложения
+          headers:
+            Location:
+              description: URL, куда нужно перенаправить пользователя после авторизации, home page приложения
+              schema:
+                type: string
+        default:
+          description: Ошибка
+          $ref: "#/components/responses/ErrorResponse"
+
+  /api/v1/oauthRedirect/yandex:
+    get:
+      tags:
+        - oauth
+      description: Обработка редиректа после авторизации в yandex
+      operationId: V1AuthorizeUsingOauthHandleYandexRedirect
+      parameters:
+        - description: Код, по которому можно получить информацию о пользователе из yandex
+          in: query
+          name: code
+          required: true
+          schema:
+            type: string
+      responses:
+        302:
+          description: Возвращает URL, куда нужно перенаправить пользователя, home page приложения
+          headers:
+            Location:
+              description: URL, куда нужно перенаправить пользователя после авторизации, home page приложения
+              schema:
+                type: string
+        default:
+          description: Ошибка
+          $ref: "#/components/responses/ErrorResponse"
+
+components:
+  parameters:
+    AuthorizationToken:
+      name: Authorization-Token
+      in: header
+      required: true
+      schema:
+        type: string
+
+    LimitParameter:
+      description: Максимальное количество элементов в ответе
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        default: 10
+
+    OffsetParameter:
+      description: Отступ, начиная с которого нужно возвращать элементы
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+
+  schemas:
+    UserRole:
+      type: string
+      enum:
+        - admin
+        - user
+
+    UserPassword:
+      type: string
+      minLength: 1
+
+    Session:
+      type: object
+      required:
+        - id
+        - token
+        - userRole
+      properties:
+        id:
+          type: string
+        token:
+          type: string
+        userRole:
+          $ref: "#/components/schemas/UserRole"
+
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - role
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          $ref: "#/components/schemas/UserRole"
+
+    SuccessResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          enum:
+            - true
+        data:
+          type: object
+
+    ErrorResponse:
+      type: object
+      required:
+        - success
+        - data
+        - error
+      properties:
+        success:
+          type: boolean
+          enum:
+            - false
+        data:
+          type: object
+        error:
+          type: object
+          required:
+            - code
+            - description
+          properties:
+            code:
+              type: string
+            description:
+              type: string
+
+    V1RegistrationsCreateRegistrationRequestBody:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+
+    V1RegistrationsCreateRegistrationResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          enum:
+            - true
+        data:
+          type: object
+          required:
+            - id
+            - email
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+              format: email
+
+    V1RegistrationsConfirmRegistrationRequestBody:
+      type: object
+      required:
+        - confirmationToken
+        - password
+      properties:
+        confirmationToken:
+          type: string
+        password:
+          $ref: "#/components/schemas/UserPassword"
+
+    V1RegistrationsConfirmRegistrationResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          enum:
+            - true
+        data:
+          type: object
+          required:
+            - session
+          properties:
+            session:
+              $ref: "#/components/schemas/Session"
+
+    V1SessionsCreateSessionRequestBody:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          $ref: "#/components/schemas/UserPassword"
+
+    V1SessionsCreateSessionResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          enum:
+            - true
+        data:
+          type: object
+          required:
+            - session
+          properties:
+            session:
+              $ref: "#/components/schemas/Session"
+
+    V1PasswordRecoveryRequestsCreatePasswordRecoveryRequestRequestBody:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+
+    V1PasswordRecoveryRequestsCreatePasswordRecoveryRequestResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          enum:
+            - true
+        data:
+          type: object
+          required:
+            - id
+            - email
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+              format: email
+
+    V1PasswordRecoveryRequestsConfirmPasswordRecoveryRequestRequestBody:
+      type: object
+      required:
+        - confirmationToken
+        - newPassword
+      properties:
+        confirmationToken:
+          type: string
+        newPassword:
+          $ref: "#/components/schemas/UserPassword"
+
+    V1PasswordRecoveryRequestsConfirmPasswordRecoveryRequestResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          enum:
+            - true
+        data:
+          type: object
+          required:
+            - session
+          properties:
+            session:
+              $ref: "#/components/schemas/Session"
+
+    V1UsersGetUsersResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          enum:
+            - true
+        data:
+          type: object
+          required:
+            - users
+            - limit
+            - offset
+            - total
+          properties:
+            users:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+            limit:
+              type: integer
+            offset:
+              type: integer
+            total:
+              type: integer
+
+    V1UsersGetUserResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          enum:
+            - true
+        data:
+          type: object
+          required:
+            - user
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+
+    V1AuthorizeUsingOauthRequestBody:
+      type: object
+      required:
+        - oauthSource
+      properties:
+        oauthSource:
+          type: string
+          enum:
+            - vk
+            - mail
+            - yandex
+
+    V1AuthorizeUsingOauthResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          enum:
+            - true
+        data:
+          type: object
+          required:
+            - url
+          properties:
+            url:
+              type: string
+
+  requestBodies:
+    V1RegistrationsCreateRegistrationRequestBody:
+      description: Запрос для создания заявки на регистрацию
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V1RegistrationsCreateRegistrationRequestBody'
+
+    V1RegistrationsConfirmRegistrationRequestBody:
+      description: Запрос для подтверждения регистрации, создание пользователя с заданным паролем и авторизации
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V1RegistrationsConfirmRegistrationRequestBody'
+
+    V1SessionsCreateSessionRequestBody:
+      description: Запрос для создания сессии для пользователя
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V1SessionsCreateSessionRequestBody'
+
+    V1PasswordRecoveryRequestsCreatePasswordRecoveryRequestRequestBody:
+      description: Запрос для создания заявки на восстановление пароля
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V1PasswordRecoveryRequestsCreatePasswordRecoveryRequestRequestBody'
+
+    V1PasswordRecoveryRequestsConfirmPasswordRecoveryRequestRequestBody:
+      description: Запрос для подтверждения восстановления пароля, и авторизации
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V1PasswordRecoveryRequestsConfirmPasswordRecoveryRequestRequestBody'
+
+    V1AuthorizeUsingOauthRequestBody:
+      description: Запрос для авторизации в приложении с помощью oauth
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V1AuthorizeUsingOauthRequestBody'
+
+  responses:
+    SuccessResponse:
+      description: Ответ при успешно выполненном запросе
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SuccessResponse'
+
+    ErrorResponse:
+      description: Ответ при ошибке во время выполнения запроса
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    V1RegistrationsCreateRegistrationResponse:
+      description: Ответ при успешном создании заявки на регистрацию
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V1RegistrationsCreateRegistrationResponse'
+
+    V1RegistrationsConfirmRegistrationResponse:
+      description: Ответ при успешном подтверждении регистрации
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V1RegistrationsConfirmRegistrationResponse'
+
+    V1SessionsCreateSessionResponse:
+      description: Ответ при успешном создании сессии
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V1SessionsCreateSessionResponse'
+
+    V1PasswordRecoveryRequestsCreatePasswordRecoveryRequestResponse:
+      description: Ответ при успешном создании заявки восстановление пароля
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V1PasswordRecoveryRequestsCreatePasswordRecoveryRequestResponse'
+
+    V1PasswordRecoveryRequestsConfirmPasswordRecoveryRequestResponse:
+      description: Ответ при успешном восстановлении пароля
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V1PasswordRecoveryRequestsConfirmPasswordRecoveryRequestResponse'
+
+    V1UsersGetUsersResponse:
+      description: Ответ при успешном получении списка пользователей
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V1UsersGetUsersResponse'
+
+    V1UsersGetUserResponse:
+      description: Ответ при успешном получении текущего пользователя
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V1UsersGetUserResponse'
+
+    V1AuthorizeUsingOauthResponse:
+      description: Ответ при успешной генерации URL, куда нужно перенаправить пользователя
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V1AuthorizeUsingOauthResponse'

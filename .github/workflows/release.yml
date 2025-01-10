@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.1'
+      - uses: actions/checkout@v4
+      - uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.60.3
+
+  build-push-image-update-container:
+    needs: lint
+    runs-on: ubuntu-latest
+    environment: prod
+    env:
+      IMAGE: cr.yandex/${{ vars.YC_REGISTRY }}:${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: yc-actions/yc-cr-login@v2
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+
+      - run: |
+          docker build -t ${{ env.IMAGE }} .
+          docker push ${{ env.IMAGE }}
+
+      - uses: yc-actions/yc-sls-container-deploy@v2
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+          container-name: ${{ vars.YC_CONTAINER_NAME }}
+          folder-id: ${{ vars.YC_FOLDER_ID }}
+          revision-service-account-id: ${{ vars.YC_SERVICE_ACCOUNT_ID }}
+          revision-image-url: ${{ env.IMAGE }}
+          revision-execution-timeout: 300
+          revision-concurrency: 16
+          revision-log-options-log-group-id: ${{ vars.YC_LOG_OPTIONS_LOG_GROUP_ID }}
+          revision-storage-mounts: |
+            ${{ vars.YC_S3_PATH }}:${{ vars.YDB_AUTH_FILE_DIR_NAME }}
+          revision-env: |
+            YCP_HOST=${{ vars.YCP_HOST }}
+            YCP_PORT=${{ vars.YCP_PORT }}
+            YCP_FROM_NAME=${{ vars.YCP_FROM_NAME }}
+            YCP_FROM_ADDRESS=${{ vars.YCP_FROM_ADDRESS }}
+            YCP_USERNAME=${{ secrets.YCP_USERNAME }}
+            YCP_PASSWORD=${{ secrets.YCP_PASSWORD }}
+            YDB_DSN=${{ secrets.YDB_DSN }}
+            YDB_AUTH_FILE_DIR_NAME=${{ vars.YDB_AUTH_FILE_DIR_NAME }}
+            YDB_AUTH_FILE_NAME=${{ vars.YDB_AUTH_FILE_NAME }}
+            FRONT_URL=${{ vars.FRONT_URL }}
+            FRONT_HANDLE_AUTH_PAGE_URL=${{ vars.FRONT_HANDLE_AUTH_PAGE_URL }}
+            SENTRY_DSN=${{ vars.SENTRY_DSN }}
+            ENVIRONMENT=${{ vars.ENVIRONMENT }}
+            FRONT_CONFIRMATION_REGISTRATION_URL=${{ vars.FRONT_CONFIRMATION_REGISTRATION_URL }}
+            FRONT_CONFIRMATION_PASSWORD_RECOVERY_REQUEST_URL=${{ vars.FRONT_CONFIRMATION_PASSWORD_RECOVERY_REQUEST_URL }}
+            OAUTH_VK_CLIENT_ID=${{ secrets.OAUTH_VK_CLIENT_ID }}
+            OAUTH_VK_CLIENT_SECRET=${{ secrets.OAUTH_VK_CLIENT_SECRET }}
+            OAUTH_VK_REDIRECT_URL=${{ vars.OAUTH_VK_REDIRECT_URL }}
+            OAUTH_MAIL_CLIENT_ID=${{ secrets.OAUTH_MAIL_CLIENT_ID }}
+            OAUTH_MAIL_CLIENT_SECRET=${{ secrets.OAUTH_MAIL_CLIENT_SECRET }}
+            OAUTH_MAIL_REDIRECT_URL=${{ vars.OAUTH_MAIL_REDIRECT_URL }}
+            OAUTH_YANDEX_CLIENT_ID=${{ secrets.OAUTH_YANDEX_CLIENT_ID }}
+            OAUTH_YANDEX_CLIENT_SECRET=${{ secrets.OAUTH_YANDEX_CLIENT_SECRET }}
+            OAUTH_YANDEX_REDIRECT_URL=${{ vars.OAUTH_YANDEX_REDIRECT_URL }}
+            OAUTH_MAIL_API_URL=${{ vars.OAUTH_MAIL_API_URL }}
+            OAUTH_YANDEX_API_URL=${{ vars.OAUTH_YANDEX_API_URL }}

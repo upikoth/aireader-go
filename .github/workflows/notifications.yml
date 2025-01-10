@@ -1,0 +1,24 @@
+#file: noinspection SpellCheckingInspection
+name: Notifications
+
+on:
+  workflow_run:
+    workflows: [Release]
+    types:
+      - completed
+
+jobs:
+  tg-workflow-failure:
+    name: Telegram notification about failed workflow
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - name: Send telegram message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.NOTIFICATIONS_TELEGRAM_TO }}
+          token: ${{ secrets.NOTIFICATIONS_TELEGRAM_TOKEN }}
+          message: |
+            Приложение: https://github.com/${{ github.repository }}
+
+            Workflow ${{ github.event.workflow_run.name }} failed!

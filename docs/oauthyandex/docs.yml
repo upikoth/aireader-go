@@ -1,0 +1,69 @@
+openapi: 3.0.2
+info:
+  version: 1.0.0
+  title: App schema
+paths:
+  /info:
+    get:
+      tags:
+        - userInfo
+      parameters:
+        - $ref: '#/components/parameters/OauthToken'
+        - $ref: '#/components/parameters/Format'
+      description: Получить информацию о пользователе по токену
+      operationId: UserInfo
+      responses:
+        200:
+          description: Успешный ответ
+          $ref: '#/components/responses/UserInfo'
+        default:
+          description: Ошибка при выполнении запроса
+          $ref: "#/components/responses/ErrorResponse"
+
+components:
+  parameters:
+    OauthToken:
+      in: query
+      name: oauth_token
+      required: true
+      schema:
+        type: string
+
+    Format:
+      in: query
+      name: format
+      required: true
+      schema:
+        type: string
+        enum:
+          - json
+
+  responses:
+    UserInfo:
+      description: Ответ при успешно выполненном запросе
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserInfo'
+
+    ErrorResponse:
+      description: Ответ при ошибке во время выполнения запроса
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  schemas:
+    UserInfo:
+      type: object
+      required:
+        - id
+        - default_email
+      properties:
+        id:
+          type: string
+        default_email:
+          type: string
+
+    ErrorResponse:
+      type: string
