@@ -586,10 +586,14 @@ github.com/getsentry/sentry-go v0.29.1 h1:DyZuChN8Hz3ARxGVV8ePaNXh1dQ7d76AiB117x
 github.com/getsentry/sentry-go v0.29.1/go.mod h1:x3AtIzN01d6SiWkderzaH28Tm0lgkafpJ5Bm3li39O0=
 github.com/getsentry/sentry-go v0.30.0 h1:lWUwDnY7sKHaVIoZ9wYqRHJ5iEmoc0pqcRqFkosKzBo=
 github.com/getsentry/sentry-go v0.30.0/go.mod h1:WU9B9/1/sHDqeV8T+3VwwbjeR5MSXs/6aqG3mqZrezA=
+github.com/getsentry/sentry-go v0.31.1 h1:ELVc0h7gwyhnXHDouXkhqTFSO5oslsRDk0++eyE0KJ4=
+github.com/getsentry/sentry-go v0.31.1/go.mod h1:CYNcMMz73YigoHljQRG+qPF+eMq8gG72XcGN/p71BAY=
 github.com/getsentry/sentry-go/otel v0.29.1 h1:6JWman95a+h8q21yN3BF+++Oiho1EqSs34GJfO/GaFo=
 github.com/getsentry/sentry-go/otel v0.29.1/go.mod h1:jiFp43y6G2asKN427jbJOnSQPWzZbm12LGXwRd6+k7M=
 github.com/getsentry/sentry-go/otel v0.30.0 h1:SPneCBdunHgpcov0NnF6XUaio+gX/eUv8YZbJfgwotk=
 github.com/getsentry/sentry-go/otel v0.30.0/go.mod h1:ZNIHOsVuEAfVHpl6t38fMEoR+9sVSENNBEZeR6J08k8=
+github.com/getsentry/sentry-go/otel v0.31.1 h1:isezYqgpbCX964O3naz9ym40oyw3XPn5RN0XExUsRps=
+github.com/getsentry/sentry-go/otel v0.31.1/go.mod h1:jVkfzyNCMLJ1QcAYZdjnnxbRPkXFeiX+HGHjWQzPx1c=
 github.com/ghodss/yaml v1.0.0 h1:wQHKEahhL6wmXdzwWG11gIVCkOv05bNOh+Rxn0yngAk=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/go-errors/errors v1.4.2 h1:J6MZopCL4uSllY1OfXM374weqZFFItUbrImctkmUxIA=
