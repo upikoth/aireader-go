@@ -255,6 +255,24 @@ paths:
           description: Ошибка
           $ref: "#/components/responses/ErrorResponse"
 
+  /api/v1/voices:
+    post:
+      tags:
+        - voices
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationToken'
+      description: Создание голоса
+      operationId: V1CreateVoice
+      requestBody:
+        $ref: '#/components/requestBodies/V1VoicesCreateVoiceRequestBody'
+      responses:
+        200:
+          description: Успешный ответ, голос добавлен
+          $ref: '#/components/responses/SuccessResponse'
+        default:
+          description: Ошибка
+          $ref: "#/components/responses/ErrorResponse"
+
 components:
   parameters:
     AuthorizationToken:
@@ -323,6 +341,11 @@ components:
           format: email
         role:
           $ref: "#/components/schemas/UserRole"
+
+    VoiceSource:
+      type: string
+      enum:
+        - yandex
 
     SuccessResponse:
       type: object
@@ -588,6 +611,17 @@ components:
             url:
               type: string
 
+    V1VoicesCreateVoiceRequestBody:
+      type: object
+      required:
+        - name
+        - source
+      properties:
+        name:
+          type: string
+        source:
+          $ref: "#/components/schemas/VoiceSource"
+
   requestBodies:
     V1RegistrationsCreateRegistrationRequestBody:
       description: Запрос для создания заявки на регистрацию
@@ -636,6 +670,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/V1AuthorizeUsingOauthRequestBody'
+
+    V1VoicesCreateVoiceRequestBody:
+      description: Запрос для добавления голоса
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V1VoicesCreateVoiceRequestBody'
 
   responses:
     SuccessResponse:

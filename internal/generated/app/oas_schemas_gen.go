@@ -1060,3 +1060,64 @@ func (V1UsersGetUsersResponseSuccess) AllValues() []V1UsersGetUsersResponseSucce
 		V1UsersGetUsersResponseSuccessTrue,
 	}
 }
+
+// Ref: #/components/schemas/V1VoicesCreateVoiceRequestBody
+type V1VoicesCreateVoiceRequestBody struct {
+	Name   string      `json:"name"`
+	Source VoiceSource `json:"source"`
+}
+
+// GetName returns the value of Name.
+func (s *V1VoicesCreateVoiceRequestBody) GetName() string {
+	return s.Name
+}
+
+// GetSource returns the value of Source.
+func (s *V1VoicesCreateVoiceRequestBody) GetSource() VoiceSource {
+	return s.Source
+}
+
+// SetName sets the value of Name.
+func (s *V1VoicesCreateVoiceRequestBody) SetName(val string) {
+	s.Name = val
+}
+
+// SetSource sets the value of Source.
+func (s *V1VoicesCreateVoiceRequestBody) SetSource(val VoiceSource) {
+	s.Source = val
+}
+
+// Ref: #/components/schemas/VoiceSource
+type VoiceSource string
+
+const (
+	VoiceSourceYandex VoiceSource = "yandex"
+)
+
+// AllValues returns all VoiceSource values.
+func (VoiceSource) AllValues() []VoiceSource {
+	return []VoiceSource{
+		VoiceSourceYandex,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s VoiceSource) MarshalText() ([]byte, error) {
+	switch s {
+	case VoiceSourceYandex:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *VoiceSource) UnmarshalText(data []byte) error {
+	switch VoiceSource(data) {
+	case VoiceSourceYandex:
+		*s = VoiceSourceYandex
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}

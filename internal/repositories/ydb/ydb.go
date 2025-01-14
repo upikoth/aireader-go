@@ -16,6 +16,7 @@ import (
 	"github.com/upikoth/aireader-go/internal/repositories/ydb/registrations"
 	"github.com/upikoth/aireader-go/internal/repositories/ydb/sessions"
 	"github.com/upikoth/aireader-go/internal/repositories/ydb/users"
+	"github.com/upikoth/aireader-go/internal/repositories/ydb/voices"
 	ydbOtel "github.com/ydb-platform/ydb-go-sdk-otel"
 	"github.com/ydb-platform/ydb-go-sdk/v3"
 	"github.com/ydb-platform/ydb-go-sdk/v3/trace"
@@ -27,6 +28,7 @@ type YDB struct {
 	Sessions                 *sessions.Sessions
 	Registrations            *registrations.Registrations
 	PasswordRecoveryRequests *passwordrecoveryrequests.PasswordRecoveryRequests
+	Voices                   *voices.Voices
 	DB                       *ydb.Driver
 	config                   *config.Ydb
 	logger                   logger.Logger
@@ -68,6 +70,7 @@ func New(
 		Sessions:                 sessions.New(driver, log),
 		Registrations:            registrations.New(driver, log),
 		PasswordRecoveryRequests: passwordrecoveryrequests.New(driver, log),
+		Voices:                   voices.New(driver, log),
 	}, nil
 }
 

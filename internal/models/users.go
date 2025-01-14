@@ -11,6 +11,7 @@ type UserAction string
 
 const (
 	UserActionGetAnyUserInfo UserAction = "get-any-user-info"
+	UserActionVoiceCreate    UserAction = "voice-create"
 )
 
 var userRoleActionMap = map[UserRole]map[UserAction]bool{
@@ -19,6 +20,7 @@ var userRoleActionMap = map[UserRole]map[UserAction]bool{
 	},
 	UserRoleAdmin: {
 		UserActionGetAnyUserInfo: true,
+		UserActionVoiceCreate:    true,
 	},
 }
 

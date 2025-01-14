@@ -247,6 +247,61 @@ func decodeV1CheckCurrentSessionParams(args [0]string, argsEscaped bool, r *http
 	return params, nil
 }
 
+// V1CreateVoiceParams is parameters of V1CreateVoice operation.
+type V1CreateVoiceParams struct {
+	AuthorizationToken string
+}
+
+func unpackV1CreateVoiceParams(packed middleware.Parameters) (params V1CreateVoiceParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Authorization-Token",
+			In:   "header",
+		}
+		params.AuthorizationToken = packed[key].(string)
+	}
+	return params
+}
+
+func decodeV1CreateVoiceParams(args [0]string, argsEscaped bool, r *http.Request) (params V1CreateVoiceParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Authorization-Token.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Authorization-Token",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.AuthorizationToken = c
+				return nil
+			}); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Authorization-Token",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
 // V1DeleteSessionParams is parameters of V1DeleteSession operation.
 type V1DeleteSessionParams struct {
 	// Id сессии.

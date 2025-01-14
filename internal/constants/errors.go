@@ -16,4 +16,7 @@ var (
 
 	ErrPasswordRecoveryRequestNotFound        = errors.New("запрос на восстановление пароля не найден")
 	ErrPasswordRecoveryRequestCreatingSession = errors.New("не удалось создать сессию")
+
+	ErrVoiceNameAlreadyExist = errors.New("голос уже существует")
+	ErrVoiceNotFound         = errors.New("голос не найден")
 )

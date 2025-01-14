@@ -10,6 +10,7 @@ import (
 	"github.com/upikoth/aireader-go/internal/services/registrations"
 	"github.com/upikoth/aireader-go/internal/services/sessions"
 	"github.com/upikoth/aireader-go/internal/services/users"
+	"github.com/upikoth/aireader-go/internal/services/voices"
 )
 
 type Services struct {
@@ -19,6 +20,7 @@ type Services struct {
 	Users                    *users.Users
 	Oauth                    *oauth.Oauth
 	Emails                   *emails.Emails
+	Voices                   *voices.Voices
 }
 
 func New(
@@ -72,6 +74,12 @@ func New(
 		repo.HTTP.OauthYandex,
 		srvs.Users,
 		srvs.Sessions,
+	)
+
+	srvs.Voices = voices.New(
+		log,
+		repo.YDB.DB,
+		repo.YDB.Voices,
 	)
 
 	return srvs, nil

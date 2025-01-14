@@ -343,6 +343,27 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				}
 
 				elem = origElem
+			case 'v': // Prefix: "voices"
+				origElem := elem
+				if l := len("voices"); len(elem) >= l && elem[0:l] == "voices" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				if len(elem) == 0 {
+					// Leaf node.
+					switch r.Method {
+					case "POST":
+						s.handleV1CreateVoiceRequest([0]string{}, elemIsEscaped, w, r)
+					default:
+						s.notAllowed(w, r, "POST")
+					}
+
+					return
+				}
+
+				elem = origElem
 			}
 
 			elem = origElem
@@ -775,6 +796,31 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					}
 
 					elem = origElem
+				}
+
+				elem = origElem
+			case 'v': // Prefix: "voices"
+				origElem := elem
+				if l := len("voices"); len(elem) >= l && elem[0:l] == "voices" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				if len(elem) == 0 {
+					// Leaf node.
+					switch method {
+					case "POST":
+						r.name = V1CreateVoiceOperation
+						r.summary = ""
+						r.operationID = "V1CreateVoice"
+						r.pathPattern = "/api/v1/voices"
+						r.args = args
+						r.count = 0
+						return r, true
+					default:
+						return
+					}
 				}
 
 				elem = origElem

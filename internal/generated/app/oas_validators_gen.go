@@ -901,3 +901,35 @@ func (s V1UsersGetUsersResponseSuccess) Validate() error {
 		return errors.Errorf("invalid value: %v", s)
 	}
 }
+
+func (s *V1VoicesCreateVoiceRequestBody) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.Source.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "source",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s VoiceSource) Validate() error {
+	switch s {
+	case "yandex":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}

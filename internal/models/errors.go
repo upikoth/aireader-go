@@ -22,6 +22,9 @@ const (
 	ErrCodeUsersGetListForbidden ErrorCode = "400"
 
 	ErrCodeOauthSourceNotExist ErrorCode = "500"
+
+	ErrCodeVoiceCreateForbidden ErrorCode = "600"
+	ErrCodeVoiceAlreadyExist    ErrorCode = "601"
 )
 
 type Error struct {

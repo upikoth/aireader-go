@@ -112,6 +112,15 @@ func (UnimplementedHandler) V1CreateSession(ctx context.Context, req *V1Sessions
 	return r, ht.ErrNotImplemented
 }
 
+// V1CreateVoice implements V1CreateVoice operation.
+//
+// Создание голоса.
+//
+// POST /api/v1/voices
+func (UnimplementedHandler) V1CreateVoice(ctx context.Context, req *V1VoicesCreateVoiceRequestBody, params V1CreateVoiceParams) (r *SuccessResponse, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
 // V1DeleteSession implements V1DeleteSession operation.
 //
 // Удаление сессии пользователя.

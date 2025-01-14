@@ -74,6 +74,12 @@ type Handler interface {
 	//
 	// POST /api/v1/sessions
 	V1CreateSession(ctx context.Context, req *V1SessionsCreateSessionRequestBody) (*V1SessionsCreateSessionResponse, error)
+	// V1CreateVoice implements V1CreateVoice operation.
+	//
+	// Создание голоса.
+	//
+	// POST /api/v1/voices
+	V1CreateVoice(ctx context.Context, req *V1VoicesCreateVoiceRequestBody, params V1CreateVoiceParams) (*SuccessResponse, error)
 	// V1DeleteSession implements V1DeleteSession operation.
 	//
 	// Удаление сессии пользователя.
