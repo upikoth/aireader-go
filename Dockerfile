@@ -1,6 +1,6 @@
 # Stage 1. Build.
 
-FROM golang:1.23.4-alpine as build
+FROM golang:1.23.5-alpine as build
 
 RUN apk add --no-cache make \
 	&& rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
