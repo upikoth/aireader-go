@@ -1,6 +1,6 @@
 module github.com/upikoth/aireader-go
 
-go 1.23.4
+go 1.23.5
 
 require (
 	github.com/getsentry/sentry-go v0.30.0
