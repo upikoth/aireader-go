@@ -148,6 +148,15 @@ func (UnimplementedHandler) V1GetUsers(ctx context.Context, params V1GetUsersPar
 	return r, ht.ErrNotImplemented
 }
 
+// V1GetVoices implements V1GetVoices operation.
+//
+// Получение списка голосов.
+//
+// GET /api/v1/voices
+func (UnimplementedHandler) V1GetVoices(ctx context.Context, params V1GetVoicesParams) (r *V1VoicesGetVoicesResponse, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
 // NewError creates *ErrorResponseStatusCode from error returned by handler.
 //
 // Used for common default response.

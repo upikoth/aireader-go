@@ -76,3 +76,45 @@ func (h *Handler) V1CreateVoice(
 		Data:    app.SuccessResponseData{},
 	}, nil
 }
+
+func (h *Handler) V1GetVoices(
+	inputCtx context.Context,
+	params app.V1GetVoicesParams,
+) (*app.V1VoicesGetVoicesResponse, error) {
+	tracer := otel.Tracer(tracing.GetHandlerTraceName())
+	ctx, span := tracer.Start(inputCtx, tracing.GetHandlerTraceName())
+	defer span.End()
+
+	voicesGetListParams := &models.VoicesGetListParams{
+		Limit:  params.Limit.Value,
+		Offset: params.Offset.Value,
+	}
+
+	voiceList, err := h.services.Voices.GetList(ctx, voicesGetListParams)
+
+	if err != nil {
+		tracing.HandleError(span, err)
+		return nil, &models.Error{
+			Code:        models.ErrCodeInterval,
+			Description: err.Error(),
+		}
+	}
+
+	var voicesResult []app.Voice
+	for _, voice := range voiceList.Voices {
+		voicesResult = append(voicesResult, app.Voice{
+			Name:   voice.Name,
+			Source: app.VoiceSource(voice.Source),
+		})
+	}
+
+	return &app.V1VoicesGetVoicesResponse{
+		Success: true,
+		Data: app.V1VoicesGetVoicesResponseData{
+			Voices: voicesResult,
+			Limit:  voicesGetListParams.Limit,
+			Offset: voicesGetListParams.Offset,
+			Total:  voiceList.Total,
+		},
+	}, nil
+}

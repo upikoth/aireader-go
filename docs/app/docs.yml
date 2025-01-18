@@ -256,6 +256,22 @@ paths:
           $ref: "#/components/responses/ErrorResponse"
 
   /api/v1/voices:
+    get:
+      tags:
+        - voices
+      description: Получение списка голосов
+      operationId: V1GetVoices
+      parameters:
+        - $ref: '#/components/parameters/LimitParameter'
+        - $ref: '#/components/parameters/OffsetParameter'
+      responses:
+        200:
+          description: Список всех голосов
+          $ref: '#/components/responses/V1VoicesGetVoicesResponse'
+        default:
+          description: Ошибка
+          $ref: "#/components/responses/ErrorResponse"
+
     post:
       tags:
         - voices
@@ -346,6 +362,17 @@ components:
       type: string
       enum:
         - yandex
+
+    Voice:
+      type: object
+      required:
+        - name
+        - source
+      properties:
+        name:
+          type: string
+        source:
+          $ref: "#/components/schemas/VoiceSource"
 
     SuccessResponse:
       type: object
@@ -622,6 +649,35 @@ components:
         source:
           $ref: "#/components/schemas/VoiceSource"
 
+    V1VoicesGetVoicesResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          enum:
+            - true
+        data:
+          type: object
+          required:
+            - voices
+            - limit
+            - offset
+            - total
+          properties:
+            voices:
+              type: array
+              items:
+                $ref: '#/components/schemas/Voice'
+            limit:
+              type: integer
+            offset:
+              type: integer
+            total:
+              type: integer
+
   requestBodies:
     V1RegistrationsCreateRegistrationRequestBody:
       description: Запрос для создания заявки на регистрацию
@@ -749,3 +805,10 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/V1AuthorizeUsingOauthResponse'
+
+    V1VoicesGetVoicesResponse:
+      description: Ответ при успешном получении списка голосов
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V1VoicesGetVoicesResponse'

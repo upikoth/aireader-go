@@ -1087,6 +1087,118 @@ func (s *V1VoicesCreateVoiceRequestBody) SetSource(val VoiceSource) {
 	s.Source = val
 }
 
+// Ref: #/components/schemas/V1VoicesGetVoicesResponse
+type V1VoicesGetVoicesResponse struct {
+	Success V1VoicesGetVoicesResponseSuccess `json:"success"`
+	Data    V1VoicesGetVoicesResponseData    `json:"data"`
+}
+
+// GetSuccess returns the value of Success.
+func (s *V1VoicesGetVoicesResponse) GetSuccess() V1VoicesGetVoicesResponseSuccess {
+	return s.Success
+}
+
+// GetData returns the value of Data.
+func (s *V1VoicesGetVoicesResponse) GetData() V1VoicesGetVoicesResponseData {
+	return s.Data
+}
+
+// SetSuccess sets the value of Success.
+func (s *V1VoicesGetVoicesResponse) SetSuccess(val V1VoicesGetVoicesResponseSuccess) {
+	s.Success = val
+}
+
+// SetData sets the value of Data.
+func (s *V1VoicesGetVoicesResponse) SetData(val V1VoicesGetVoicesResponseData) {
+	s.Data = val
+}
+
+type V1VoicesGetVoicesResponseData struct {
+	Voices []Voice `json:"voices"`
+	Limit  int     `json:"limit"`
+	Offset int     `json:"offset"`
+	Total  int     `json:"total"`
+}
+
+// GetVoices returns the value of Voices.
+func (s *V1VoicesGetVoicesResponseData) GetVoices() []Voice {
+	return s.Voices
+}
+
+// GetLimit returns the value of Limit.
+func (s *V1VoicesGetVoicesResponseData) GetLimit() int {
+	return s.Limit
+}
+
+// GetOffset returns the value of Offset.
+func (s *V1VoicesGetVoicesResponseData) GetOffset() int {
+	return s.Offset
+}
+
+// GetTotal returns the value of Total.
+func (s *V1VoicesGetVoicesResponseData) GetTotal() int {
+	return s.Total
+}
+
+// SetVoices sets the value of Voices.
+func (s *V1VoicesGetVoicesResponseData) SetVoices(val []Voice) {
+	s.Voices = val
+}
+
+// SetLimit sets the value of Limit.
+func (s *V1VoicesGetVoicesResponseData) SetLimit(val int) {
+	s.Limit = val
+}
+
+// SetOffset sets the value of Offset.
+func (s *V1VoicesGetVoicesResponseData) SetOffset(val int) {
+	s.Offset = val
+}
+
+// SetTotal sets the value of Total.
+func (s *V1VoicesGetVoicesResponseData) SetTotal(val int) {
+	s.Total = val
+}
+
+type V1VoicesGetVoicesResponseSuccess bool
+
+const (
+	V1VoicesGetVoicesResponseSuccessTrue V1VoicesGetVoicesResponseSuccess = true
+)
+
+// AllValues returns all V1VoicesGetVoicesResponseSuccess values.
+func (V1VoicesGetVoicesResponseSuccess) AllValues() []V1VoicesGetVoicesResponseSuccess {
+	return []V1VoicesGetVoicesResponseSuccess{
+		V1VoicesGetVoicesResponseSuccessTrue,
+	}
+}
+
+// Ref: #/components/schemas/Voice
+type Voice struct {
+	Name   string      `json:"name"`
+	Source VoiceSource `json:"source"`
+}
+
+// GetName returns the value of Name.
+func (s *Voice) GetName() string {
+	return s.Name
+}
+
+// GetSource returns the value of Source.
+func (s *Voice) GetSource() VoiceSource {
+	return s.Source
+}
+
+// SetName sets the value of Name.
+func (s *Voice) SetName(val string) {
+	s.Name = val
+}
+
+// SetSource sets the value of Source.
+func (s *Voice) SetSource(val VoiceSource) {
+	s.Source = val
+}
+
 // Ref: #/components/schemas/VoiceSource
 type VoiceSource string
 

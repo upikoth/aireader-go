@@ -98,6 +98,12 @@ type Handler interface {
 	//
 	// GET /api/v1/users
 	V1GetUsers(ctx context.Context, params V1GetUsersParams) (*V1UsersGetUsersResponse, error)
+	// V1GetVoices implements V1GetVoices operation.
+	//
+	// Получение списка голосов.
+	//
+	// GET /api/v1/voices
+	V1GetVoices(ctx context.Context, params V1GetVoicesParams) (*V1VoicesGetVoicesResponse, error)
 	// NewError creates *ErrorResponseStatusCode from error returned by handler.
 	//
 	// Used for common default response.
