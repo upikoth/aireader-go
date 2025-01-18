@@ -65,7 +65,11 @@ func (v *Voices) GetList(
 	}, nil
 }
 
-func queryVoices(qCtx context.Context, tx query.Transaction, params *models.VoicesGetListParams) ([]*models.Voice, error) {
+func queryVoices(
+	qCtx context.Context,
+	tx query.Transaction,
+	params *models.VoicesGetListParams,
+) ([]*models.Voice, error) {
 	var resVoices []*models.Voice
 
 	qRes, qErr := tx.QueryResultSet(
